@@ -23,10 +23,23 @@ namespace PlatformService.Controllers
     {
       Console.WriteLine("--> Getting Platforms");
 
-      var platformItem = _repository.GetAllPlatForms();
+      var allPlatforms = _repository.GetAllPlatForms();
 
-      return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(platformItem));
+      return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(allPlatforms));
 
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<PlatformReadDto> GetPlatformById(int id)
+    {
+      var platformItem = _repository.GetPlatformById(id);
+
+      if (platformItem != null)
+      {
+        return Ok(_mapper.Map<PlatformReadDto>(platformItem));
+      }
+
+      return NotFound();
     }
   }
 }
