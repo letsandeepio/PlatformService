@@ -1,9 +1,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PlatformService.Data;
+using PlatformService.Dtos;
 
 namespace PlatformService.Controllers
 {
+  [Route("api/[controller]")]
   [ApiController]
   public class PlatformsController : ControllerBase
   {
@@ -16,6 +18,15 @@ namespace PlatformService.Controllers
       _mapper = mapper;
     }
 
+    [HttpGet]
+    public ActionResult<IEnumerable<PlatformReadDto>> GetPlatforms()
+    {
+      Console.WriteLine("--> Getting Platforms");
 
+      var platformItem = _repository.GetAllPlatForms();
+
+      return Ok(_mapper.Map<IEnumerable<PlatformReadDto>>(platformItem));
+
+    }
   }
 }
