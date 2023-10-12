@@ -30,7 +30,7 @@ namespace PlatformService.Controllers
 
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetPlatformById")]
     public ActionResult<PlatformReadDto> GetPlatformById(int id)
     {
       var platformItem = _repository.GetPlatformById(id);
@@ -52,7 +52,9 @@ namespace PlatformService.Controllers
       _repository.CreatePlatform(platformItem);
       _repository.SaveChanges();
 
-      return Ok(_mapper.Map<PlatformReadDto>(platformItem));
+      PlatformReadDto platformReadDto = _mapper.Map<PlatformReadDto>(platformItem);
+
+      return CreatedAtRoute(nameof(GetPlatformById), new { platformReadDto.Id }, platformReadDto);
 
     }
   }
