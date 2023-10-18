@@ -39,4 +39,6 @@ app.MapControllers();
 
 PrepDb.PrepPopulation(app);
 
+Console.WriteLine($"--> CommandService Endpoint {app.Configuration["CommandService"]}");
+
 app.Run();
