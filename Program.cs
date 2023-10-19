@@ -17,10 +17,18 @@ builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+
+// check if dev environment, if dev use in mem dataase else use sql server
+if (builder.Environment.IsDevelopment())
 {
-    options.UseInMemoryDatabase("InMem");
-});
+    Console.WriteLine("--> Using InMem DB");
+    builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
+}
+else
+{
+    Console.WriteLine("--> Using SQL Server");
+    builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("PlatformsConn")));
+}
 
 var app = builder.Build();
 
@@ -37,7 +45,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-PrepDb.PrepPopulation(app);
+PrepDb.PrepPopulation(app, app.Environment.IsProduction());
 
 Console.WriteLine($"--> CommandService Endpoint {app.Configuration["CommandService"]}");
 
