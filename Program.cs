@@ -20,8 +20,6 @@ builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
-
-
 // check if dev environment, if dev use in mem dataase else use sql server
 if (builder.Environment.IsDevelopment())
 {
